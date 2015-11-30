@@ -132,6 +132,7 @@ jQuery(function($) {
         
 		// Checks the permission : : WP_NONCE
 		var ajax_flag = false;
+		//alert(ajaxurl.expressit_nonce);
         $.ajax({
             method: "POST",
 			url: ajaxurl.ajaxurl,
