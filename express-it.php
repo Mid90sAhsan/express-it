@@ -3,7 +3,7 @@
  * Plugin Name: Express It.
  * Plugin URI: http://ahsansajjad.com/
  * Description: Add like & dislike button to your post, let users express what they feel about your post. Likes/Dislikes will be saved with the help of cookies.
- * Version:  1.0.0
+ * Version:  1.0.2
  * Author: Ahsan Sajjad
  * Author URI: http://ahsansajjad.com
  * Text Domain: express-it
@@ -46,7 +46,7 @@ $express_it ->add_options();
 $express_it ->show_buttons();
 
 function expressit_likes_process() {
-	if( ! isset( $_POST['expressit_nonce'] ) ) :
+	if( ! isset( $_POST['expressit_nonce'] ) ) : 
 		return;
 	endif;
 	
@@ -60,7 +60,7 @@ if( ! empty( $_POST['id'] ) ) :
      * Security Check : Likes must not be smaller than 0
      */
     if ( $like_link[0] < 0 ) $like_link[0] = 0;
-    
+     
     if( $like_link == null ) :
         /*
          * NO Record Found! 
@@ -69,7 +69,7 @@ if( ! empty( $_POST['id'] ) ) :
          * 
          */
         $wpdb ->insert (
-                    'wp_expressit_likes_counter' ,
+                    $wpdb->prefix.'expressit_likes_counter' ,
                     array(
                         'post_id' => $id ,
                         'likes' => 1
@@ -90,7 +90,7 @@ if( ! empty( $_POST['id'] ) ) :
          */
         if( $val ==  1 ) : 
             $wpdb ->update (
-                        'wp_expressit_likes_counter' ,
+                        $wpdb->prefix.'expressit_likes_counter' ,
                         array(
                             'likes' => $like_link[0] + 1
                         ),
@@ -100,7 +100,7 @@ if( ! empty( $_POST['id'] ) ) :
                     );
         else :
             $wpdb ->update (
-                        'wp_expressit_likes_counter' ,
+                        $wpdb->prefix.'expressit_likes_counter' ,
                         array(
                             'likes' => $like_link[0] - 1
                         ),
@@ -110,11 +110,14 @@ if( ! empty( $_POST['id'] ) ) :
                     );
         endif;
     endif;
-        
 endif;
 	die('1');
 }
+
+//For Admin
 add_action('wp_ajax_expressit_likes', 'expressit_likes_process');
+//For Visitors
+add_action('wp_ajax_nopriv_expressit_likes', 'expressit_likes_process');
 
 function expressit_dislikes_process() {
 	if( ! isset( $_POST['expressit_nonce'] ) ) 
@@ -145,7 +148,7 @@ if( ! empty( $_POST['id'] ) ) :
          * 
          */
         $wpdb ->insert (
-                    'wp_expressit_likes_counter' ,
+                    $wpdb->prefix.'expressit_likes_counter' ,
                     array(
                         'post_id' => $id ,
                         'dislikes' => 1
@@ -166,7 +169,7 @@ if( ! empty( $_POST['id'] ) ) :
          */
         if( $val == 1 ) :
             $wpdb ->update (
-                        'wp_expressit_likes_counter' ,
+                        $wpdb->prefix.'expressit_likes_counter' ,
                         array(
                             'dislikes' => $dislike_link[0] + 1
                         ),
@@ -176,7 +179,7 @@ if( ! empty( $_POST['id'] ) ) :
                     );
         else : 
             $wpdb ->update (
-                        'wp_expressit_likes_counter' ,
+                        $wpdb->prefix.'expressit_likes_counter' ,
                         array(
                             'dislikes' => $dislike_link[0] - 1
                         ),
@@ -190,5 +193,8 @@ if( ! empty( $_POST['id'] ) ) :
 endif;
 die('1');
 }
+//For Admin
 add_action('wp_ajax_expressit_dislikes', 'expressit_dislikes_process');
+//For Normal Visitors
+add_action('wp_ajax_nopriv_expressit_dislikes', 'expressit_dislikes_process');
 ?>
