@@ -305,8 +305,8 @@ class expressit_main {
             return $content;
         }
         function enqueue_scripts() {
-            wp_enqueue_script( 'expressit-jquery-cookie' , plugins_url( '../js/jquery.cookie.js ', __FILE__ )  , array('jquery') , '1.0.0' , true );
-            wp_enqueue_script( 'expressit-ajax-it' , plugins_url( '../js/expressit-ajax.js', __FILE__ ) , array('jquery') , '1.0.0' , true );
+            wp_enqueue_script( 'expressit-jquery-cookie' , plugins_url( '../js/jquery.cookie.js', __FILE__ )  , array('jquery') , '1.12.4' , true );
+            wp_enqueue_script( 'expressit-ajax-it' , plugins_url( '../js/expressit-ajax.js', __FILE__ ) , array('jquery') , '1.12.4' , true );
             /*
              * Data for jQuery Variables
              */
